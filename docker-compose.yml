@@ -1,0 +1,63 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-db_bank}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in the root .env file}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - bank-net
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  exchange-service:
+    build:
+      context: ./04-servicio-propio-nestjs
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      FRANKFURTER_BASE_URL: ${FRANKFURTER_BASE_URL:-https://api.frankfurter.dev/v2}
+    networks:
+      - bank-net
+
+  backend:
+    build:
+      context: ./01-backend-springboot
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      exchange-service:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-db_bank}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in the root .env file}
+      EXCHANGE_SERVICE_URL: http://exchange-service:3000
+      APP_JWT_SECRET: ${APP_JWT_SECRET:?Set APP_JWT_SECRET in the root .env file}
+    networks:
+      - bank-net
+
+  frontend:
+    build:
+      context: ./goldenbank-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    networks:
+      - bank-net
+
+volumes:
+  mysql_data:
+
+networks:
+  bank-net:
+    driver: bridge

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">Integración de tasas de cambio con Frankfurter</title>
+  <desc id="description">Diagrama de presentación que explica cómo la aplicación solicita una tasa a Spring Boot, que se comunica con un microservicio NestJS y este consulta Frankfurter. La respuesta regresa por el mismo camino.</desc>
+  <defs>
+    <linearGradient id="bg" x1="86" y1="72" x2="1500" y2="980" gradientUnits="userSpaceOnUse"><stop stop-color="#F7F7F1"/><stop offset="1" stop-color="#ECEFE8"/></linearGradient>
+    <linearGradient id="hero" x1="102" y1="231" x2="1515" y2="563" gradientUnits="userSpaceOnUse"><stop stop-color="#24332E"/><stop offset="1" stop-color="#33483C"/></linearGradient>
+    <linearGradient id="provider" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F2E8D7"/><stop offset="1" stop-color="#E9E1CF"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#24332E" flood-opacity=".08"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" stroke="#789276" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <style>
+      text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+      .mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    </style>
+  </defs>
+  <rect width="1600" height="1000" rx="34" fill="url(#bg)"/>
+  <circle cx="1460" cy="105" r="190" stroke="#DDE3D8"/><circle cx="1460" cy="105" r="148" stroke="#E3E7DF"/>
+  <g transform="translate(100 75)">
+    <image href="goldenbank-icon.png" width="42" height="42" preserveAspectRatio="xMidYMid meet"/>
+    <text x="58" y="18" fill="#70816F" font-size="13" font-weight="700" letter-spacing="2.2">GOLDENBANK · INTEGRACIÓN DE SERVICIOS</text>
+    <text x="58" y="43" fill="#26332D" font-size="15" font-weight="600">Arquitectura de consulta de divisas</text>
+  </g>
+  <text x="100" y="184" fill="#26332D" font-size="48" font-weight="650" letter-spacing="-1.6">De una consulta a una tasa útil.</text>
+  <text x="102" y="218" fill="#7B8980" font-size="17">Frankfurter aporta la tasa de referencia. Nuestra arquitectura gestiona la solicitud y la respuesta.</text>
+
+  <g filter="url(#shadow)"><rect x="100" y="260" width="1400" height="345" rx="24" fill="url(#hero)"/></g>
+  <text x="138" y="303" fill="#AFC0B4" font-size="11" font-weight="700" letter-spacing="1.8">RECORRIDO DE LA SOLICITUD</text>
+  <text x="1462" y="303" text-anchor="end" fill="#C9E995" font-size="11" font-weight="650" letter-spacing="1.2">IDA Y VUELTA · HTTP / JSON</text>
+
+  <!-- Return path: provider to the user interface. -->
+  <path d="M1317 390V354H283V390" stroke="#C9E995" stroke-opacity=".82" stroke-width="2" stroke-dasharray="6 7" marker-end="url(#arrow)"/>
+  <rect x="685" y="337" width="233" height="29" rx="14.5" fill="#33463A" stroke="#809777" stroke-opacity=".45"/>
+  <text x="801.5" y="356" text-anchor="middle" fill="#D9E9C3" font-size="10" font-weight="650" letter-spacing=".8">RESPUESTA JSON · TASA + FECHA</text>
+
+  <!-- Request path. -->
+  <path d="M457 477H493M802 477H838M1147 477H1183" stroke="#BFD0C1" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Browser node. -->
+  <g>
+    <rect x="138" y="397" width="319" height="150" rx="15" fill="#F8FAF6"/>
+    <rect x="158" y="418" width="37" height="37" rx="10" fill="#E5EEDC"/>
+    <rect x="168" y="427" width="17" height="14" rx="2" stroke="#557555" stroke-width="1.5"/><path d="M168 431h17" stroke="#557555" stroke-width="1.5"/>
+    <text x="207" y="429" fill="#809084" font-size="9" font-weight="700" letter-spacing="1.1">01 · EXPERIENCIA</text>
+    <text x="207" y="449" fill="#2B3A31" font-size="15" font-weight="700">Aplicación web</text>
+    <text x="158" y="484" fill="#69796D" font-size="11">El usuario selecciona monedas</text>
+    <text x="158" y="502" fill="#69796D" font-size="11">e introduce el importe.</text>
+    <rect x="158" y="519" width="150" height="19" rx="9.5" fill="#EDF2E9"/>
+    <text x="170" y="532" fill="#617C60" font-size="9" font-weight="700">1 USD → COP</text>
+  </g>
+
+  <!-- Bank API node. -->
+  <g>
+    <rect x="493" y="397" width="309" height="150" rx="15" fill="#F8FAF6"/>
+    <rect x="513" y="418" width="37" height="37" rx="10" fill="#E5EEDC"/>
+    <path d="M522 431l9-5 10 5v2h-19v-2ZM524 435v9M530 435v9M536 435v9M521 446h21" stroke="#557555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="562" y="429" fill="#809084" font-size="9" font-weight="700" letter-spacing="1.1">02 · BACKEND</text>
+    <text x="562" y="449" fill="#2B3A31" font-size="15" font-weight="700">Spring Boot</text>
+    <text x="513" y="484" fill="#69796D" font-size="11">Recibe la petición autenticada</text>
+    <text x="513" y="502" fill="#69796D" font-size="11">y la enruta al microservicio.</text>
+    <text x="513" y="532" fill="#667A65" font-size="9" font-weight="650" class="mono">GET /api/v1/exchange/rate</text>
+  </g>
+
+  <!-- Own microservice node. -->
+  <g>
+    <rect x="838" y="397" width="309" height="150" rx="15" fill="#F8FAF6"/>
+    <rect x="858" y="418" width="37" height="37" rx="10" fill="#E5EEDC"/>
+    <rect x="869" y="426" width="15" height="7" rx="2" stroke="#557555" stroke-width="1.5"/><rect x="869" y="437" width="15" height="7" rx="2" stroke="#557555" stroke-width="1.5"/><circle cx="873" cy="429.5" r=".8" fill="#557555"/><circle cx="873" cy="440.5" r=".8" fill="#557555"/>
+    <text x="907" y="429" fill="#809084" font-size="9" font-weight="700" letter-spacing="1.1">03 · SERVICIO PROPIO</text>
+    <text x="907" y="449" fill="#2B3A31" font-size="15" font-weight="700">Microservicio NestJS</text>
+    <text x="858" y="484" fill="#69796D" font-size="11">Valida códigos de moneda,</text>
+    <text x="858" y="502" fill="#69796D" font-size="11">consulta y normaliza la respuesta.</text>
+    <text x="858" y="532" fill="#667A65" font-size="9" font-weight="650" class="mono">GET /api/rates/USD/COP</text>
+  </g>
+
+  <!-- External provider node. -->
+  <g>
+    <rect x="1183" y="397" width="279" height="150" rx="15" fill="url(#provider)"/>
+    <rect x="1203" y="418" width="37" height="37" rx="10" fill="#E4D8C4"/>
+    <circle cx="1221.5" cy="436.5" r="9" stroke="#876B44" stroke-width="1.5"/><path d="M1213 436.5h17M1221.5 427.5c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9Z" stroke="#876B44" stroke-width="1.2"/>
+    <text x="1252" y="429" fill="#988366" font-size="9" font-weight="700" letter-spacing="1.1">04 · PROVEEDOR EXTERNO</text>
+    <text x="1252" y="449" fill="#4D402F" font-size="15" font-weight="750">Frankfurter API</text>
+    <text x="1203" y="484" fill="#75674F" font-size="11">Entrega la tasa de referencia</text>
+    <text x="1203" y="502" fill="#75674F" font-size="11">y la fecha de publicación.</text>
+    <text x="1203" y="532" fill="#816A48" font-size="9" font-weight="650" class="mono">api.frankfurter.dev/v2</text>
+  </g>
+
+  <!-- Example result -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="650" width="889" height="255" rx="19" fill="#FFFFFF"/>
+    <rect x="1023" y="650" width="477" height="255" rx="19" fill="#E8EEE3"/>
+  </g>
+  <text x="136" y="691" fill="#779078" font-size="10" font-weight="750" letter-spacing="1.5">QUÉ VUELVE DEL PROVEEDOR</text>
+  <text x="136" y="721" fill="#2B3931" font-size="21" font-weight="650">Una respuesta pequeña y fácil de usar</text>
+  <rect x="136" y="743" width="817" height="127" rx="11" fill="#24332E"/>
+  <circle cx="156" cy="764" r="4" fill="#D7896E"/><circle cx="170" cy="764" r="4" fill="#E8C77C"/><circle cx="184" cy="764" r="4" fill="#A9C68C"/>
+  <text x="158" y="798" fill="#C9E995" font-size="14" class="mono">{</text>
+  <text x="180" y="798" fill="#D5DFD3" font-size="13" class="mono">"date": <tspan fill="#E8C77C">"YYYY-MM-DD"</tspan>,</text>
+  <text x="180" y="821" fill="#D5DFD3" font-size="13" class="mono">"base": <tspan fill="#E8C77C">"USD"</tspan>,  "quote": <tspan fill="#E8C77C">"COP"</tspan>,</text>
+  <text x="180" y="844" fill="#D5DFD3" font-size="13" class="mono">"rate": <tspan fill="#C9E995">tasa_publicada</tspan></text>
+  <text x="158" y="864" fill="#C9E995" font-size="14" class="mono">}</text>
+
+  <text x="1061" y="692" fill="#6D8369" font-size="10" font-weight="750" letter-spacing="1.5">RESULTADO EN LA APP</text>
+  <text x="1061" y="731" fill="#2B3931" font-size="17" font-weight="650">La tasa se aplica</text>
+  <text x="1061" y="754" fill="#2B3931" font-size="17" font-weight="650">al importe ingresado.</text>
+  <path d="M1061 779h394" stroke="#D0DACA"/>
+  <text x="1061" y="809" fill="#6D7B6F" font-size="12">importe × tasa = conversión estimada</text>
+  <rect x="1061" y="832" width="193" height="29" rx="14.5" fill="#D8E5CF"/>
+  <circle cx="1078" cy="846.5" r="4" fill="#78966D"/>
+  <text x="1090" y="850" fill="#557151" font-size="9" font-weight="700">REFERENCIA ACTUALIZADA A DIARIO</text>
+
+  <text x="100" y="950" fill="#718076" font-size="11">Frankfurter ofrece tasas de referencia; la cifra puede diferir de la aplicada por una entidad financiera.</text>
+  <a href="https://frankfurter.dev/" target="_blank"><text x="1500" y="950" text-anchor="end" fill="#607A60" font-size="11" font-weight="700">frankfurter.dev ↗</text></a>
+</svg>
